@@ -6,7 +6,8 @@ namespace ProjectsComposer.DataAccess.Repository;
 public interface IEmployeesRepository
 {
     Task<IEnumerable<EmployeeEntity>> Get();
-    Task<bool> Exist(Guid id);
+    Task<EmployeeEntity?> GetById(Guid id);
+    Task Add(Guid id, string userName, string email);
 }
 
 public class EmployeesRepository(ProjectsComposerDbContext dbContext) : IEmployeesRepository
@@ -17,6 +18,21 @@ public class EmployeesRepository(ProjectsComposerDbContext dbContext) : IEmploye
             .OrderBy(e => e.UserName)
             .ToListAsync();
 
-    public async Task<bool> Exist(Guid id) =>
-        await dbContext.Employees.AnyAsync(e => e.Id == id);
+    public async Task<EmployeeEntity?> GetById(Guid id) =>
+        await dbContext.Employees
+            .AsNoTracking()
+            .FirstOrDefaultAsync(e => e.Id == id);
+
+    public async Task Add(Guid id, string userName, string email)
+    {
+        var employeeEntity = new EmployeeEntity()
+        {
+            Id = id,
+            UserName = userName,
+            Email = email
+        };
+        
+        await dbContext.Employees.AddAsync(employeeEntity);
+        await dbContext.SaveChangesAsync();
+    }
 }

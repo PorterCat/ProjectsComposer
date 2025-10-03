@@ -7,23 +7,27 @@ namespace ProjectsComposer.API.Services;
 
 public interface IProjectsService
 {
+    Task<ProjectEntity?> GetProject(Guid projectId);
     Task<IEnumerable<ProjectEntity>> GetAllProjects();
-    Task<Result> CreateProject(Project project, Guid leaderId);
+    Task<Result> CreateProject(Project project, Guid? leaderId);
 }
 
-public class ProjectsService(IProjectsRepository projectRepository, 
+public class ProjectsService(IProjectsRepository projectsRepository, 
     IEmployeesRepository employeesRepository) 
     : IProjectsService
 {
-    public async Task<IEnumerable<ProjectEntity>> GetAllProjects() =>
-        await projectRepository.Get();
+    public async Task<ProjectEntity?> GetProject(Guid projectId) =>
+        await projectsRepository.GetById(projectId);
 
-    public async Task<Result> CreateProject(Project project, Guid leaderId)
+    public async Task<IEnumerable<ProjectEntity>> GetAllProjects() =>
+        await projectsRepository.Get();
+
+    public async Task<Result> CreateProject(Project project, Guid? leaderId)
     {
-        if(!await employeesRepository.Exist(leaderId))
+        if(leaderId is not null && await employeesRepository.GetById(leaderId.Value) is not null)
             return Result.Failure($"Leader with {leaderId} doesn't exist");
         
-        await projectRepository.Add(project.Id, project.Title,
+        await projectsRepository.Add(project.Id, project.Title,
             project.CustomerCompanyName, project.ContractorCompanyName,
             leaderId,
             project.StartDate, project.EndDate);

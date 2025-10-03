@@ -21,7 +21,11 @@ public class ProjectConfiguration : IEntityTypeConfiguration<ProjectEntity>
         builder.Property(p => p.ContractorCompanyName)
                .HasMaxLength(byte.MaxValue);
 
+        builder.Property(p => p.StartDate)
+               .HasColumnType("date");
+        
         builder.Property(p => p.EndDate)
+               .HasColumnType("date")
                .IsRequired(false);
 
         builder.HasOne(p => p.Leader)

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ProjectsComposer.DataAccess;
@@ -11,9 +12,11 @@ using ProjectsComposer.DataAccess;
 namespace ProjectsComposer.DataAccess.Migrations
 {
     [DbContext(typeof(ProjectsComposerDbContext))]
-    partial class ProjectsComposerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251003090940_Changed startTime + endTime to date type")]
+    partial class ChangedstartTimeendTimetodatetype
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

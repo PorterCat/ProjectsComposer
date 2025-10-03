@@ -2,7 +2,7 @@ using CSharpFunctionalExtensions;
 
 namespace ProjectsComposer.Core.Models;
 
-public class Project
+public record Project
 {
     public const int MaxTitleLength = 250;
 
@@ -28,7 +28,7 @@ public class Project
     public static Result<Project> Create(Guid id, string title, 
         string customerCompanyName, string contractorCompanyName, 
         DateTime startDate, DateTime? endDate = null)
-    {
+    {   
         if(string.IsNullOrEmpty(title))
             return Result.Failure<Project>("Title cannot be empty");
         

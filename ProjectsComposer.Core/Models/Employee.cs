@@ -3,7 +3,7 @@ using CSharpFunctionalExtensions;
 
 namespace ProjectsComposer.Core.Models;
 
-public class Employee
+public record Employee
 {
     private Employee(Guid id, string userName, string email)
     {

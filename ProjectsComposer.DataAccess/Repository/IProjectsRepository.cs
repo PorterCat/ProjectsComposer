@@ -12,6 +12,6 @@ public interface IProjectsRepository
 
     Task Add(Guid id, string title,
         string customerCompanyName, string contractorCompanyName,
-        Guid leaderId,
+        Guid? leaderId,
         DateTime startDate, DateTime? endDate = null);
 }

@@ -44,7 +44,7 @@ public class ProjectsRepository(ProjectsComposerDbContext dbContext) : IProjects
 
     public async Task Add(Guid id, string title, 
         string customerCompanyName, string contractorCompanyName,
-        Guid leaderId,
+        Guid? leaderId,
         DateTime startDate, DateTime? endDate = null)
     {
         var projectEntity = new ProjectEntity

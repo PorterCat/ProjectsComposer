@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProjectsComposer.API.Services;
+using ProjectsComposer.API.Services.Conflicts;
 using ProjectsComposer.DataAccess;
 using ProjectsComposer.DataAccess.Repository;
 
@@ -31,6 +32,8 @@ builder.Services.AddScoped<IProjectsService, ProjectsService>();
 
 builder.Services.AddScoped<IEmployeesRepository, EmployeesRepository>();
 builder.Services.AddScoped<IEmployeesService, EmployeesService>();
+
+builder.Services.AddScoped<IPendingCasesStore, PendingCasesStore>();
 
 builder.Services.AddControllers();
 var app = builder.Build();

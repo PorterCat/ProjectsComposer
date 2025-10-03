@@ -4,7 +4,9 @@ using ProjectsComposer.Core.Models;
 namespace ProjectsComposer.Core.Contracts;
 
 public record CreateProjectRequest(
-    [Required][MaxLength(Project.MaxTitleLength)] string Title, 
+    [Required][MaxLength(Project.MaxTitleLength)] string Title,
+    string CustomerCompanyName,
+    string ContractorCompanyName,
     DateOnly StartDate, 
     DateOnly EndDate,
-    Guid LeaderId);
+    Guid? LeaderId = null);
