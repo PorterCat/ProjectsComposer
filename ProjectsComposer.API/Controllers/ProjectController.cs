@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectsComposer.API.Services;
 using ProjectsComposer.API.Services.Conflicts;
@@ -10,6 +11,7 @@ namespace ProjectsComposer.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize] // Simple example
 public class ProjectController(IProjectsService projectsService, IPendingCasesStore pendingCasesStore) : ControllerBase
 {
     [HttpGet("all")]

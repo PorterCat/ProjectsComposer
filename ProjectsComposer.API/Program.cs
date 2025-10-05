@@ -1,8 +1,10 @@
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProjectsComposer.API.Services;
 using ProjectsComposer.API.Services.Conflicts;
+using ProjectsComposer.BuisnessLogic;
 using ProjectsComposer.DataAccess;
 using ProjectsComposer.DataAccess.Repository;
 
@@ -16,14 +18,17 @@ builder.Services.AddDbContext<ProjectsComposerDbContext>(options =>
 });
 
 builder.Services.AddAuthorization();
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) // TODO: Outline it to extenstion method
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = true,
-            ValidateAudience = true,
+            ValidateIssuer = false,
+            ValidateAudience = false,
             ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration.GetSection("AuthSettings")["SecretKey"] ?? string.Empty)),
         };
     });
 
@@ -35,11 +40,16 @@ builder.Services.AddScoped<IEmployeesService, EmployeesService>();
 
 builder.Services.AddScoped<IPendingCasesStore, PendingCasesStore>();
 
+// Authentification block
+builder.Services.AddScoped<AccountsRepository>();
+builder.Services.AddScoped<AccountsService>();
+builder.Services.AddScoped<JwtService>();
+
+builder.Services.Configure<AuthSettings>(
+    builder.Configuration.GetSection(nameof(AuthSettings)));
+
 builder.Services.AddControllers();
 var app = builder.Build();
-
-app.UseAuthorization();
-app.UseAuthentication();
 
 if (app.Environment.IsDevelopment())
 {
@@ -53,6 +63,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
