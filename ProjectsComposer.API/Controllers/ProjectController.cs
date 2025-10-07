@@ -11,7 +11,7 @@ namespace ProjectsComposer.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-[Authorize] // Simple example
+[Authorize]
 public class ProjectController(IProjectsService projectsService, IPendingCasesStore pendingCasesStore) : ControllerBase
 {
     [HttpGet("all")]
