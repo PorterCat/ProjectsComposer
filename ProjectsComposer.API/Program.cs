@@ -1,4 +1,5 @@
 using System.Text;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -54,7 +55,7 @@ builder.Services.AddScoped<IProjectsService, ProjectsService>();
 builder.Services.AddScoped<IEmployeesRepository, EmployeesRepository>();
 builder.Services.AddScoped<IEmployeesService, EmployeesService>();
 
-builder.Services.AddScoped<IPendingCasesStore, PendingCasesStore>();
+builder.Services.AddSingleton<IPendingCasesStore, PendingCasesStore>();
 
 // Authentification block
 builder.Services.AddScoped<AccountsRepository>();

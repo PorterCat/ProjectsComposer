@@ -26,6 +26,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ProjectsComposer.BuisnessLogic\ProjectsComposer.BuisnessLogic.csproj" />
+      <ProjectReference Include="..\ProjectsComposer.Core\ProjectsComposer.Core.csproj" />
       <ProjectReference Include="..\ProjectsComposer.DataAccess\ProjectsComposer.DataAccess.csproj" />
     </ItemGroup>
 

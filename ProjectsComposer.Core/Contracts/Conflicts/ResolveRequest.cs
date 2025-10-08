@@ -3,13 +3,6 @@ using System.Text.Json.Serialization;
 
 namespace ProjectsComposer.Core.Contracts.Conflicts;
 
-public enum ResolveAction
-{
-    ReturnExisting,
-    CreateAnyway,
-    Cancel
-}
-
 public class ResolveRequest
 {
     [Required]

@@ -4,4 +4,4 @@ namespace ProjectsComposer.Core.Contracts;
 
 public record CreateEmployeeRequest(
     [Required] string UserName, 
-    [Required] string Email);
+    [Required][EmailAddress] string Email);

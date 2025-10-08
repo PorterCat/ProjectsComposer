@@ -24,7 +24,7 @@ public class ProjectControllerTests
         var controller = new ProjectController(mockService.Object, Mock.Of<IPendingCasesStore>());
 
         // Act
-        var result = await controller.GetProject(projectId);
+        var result = await controller.GetProjectById(projectId);
 
         // Assert
         var okResult = result.Result as OkObjectResult;

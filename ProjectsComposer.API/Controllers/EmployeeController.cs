@@ -9,6 +9,23 @@ namespace ProjectsComposer.API.Controllers;
 [Route("[controller]")]
 public class EmployeeController(IEmployeesService employeesService) : ControllerBase
 {
+    [HttpGet("all")]
+    public async Task<ActionResult<IEnumerable<ProjectResponse>>> GetAllEmployees()
+    {
+        var employees = await employeesService.GetAllEmployees();
+        return Ok(employees);
+    }
+    
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Employee>> GetEmployee(Guid id)
+    {
+        var result = await employeesService.GetEmployee(id);
+        if(result is null)
+            return NotFound($"Employee [{id}] not found.");
+        
+        return Ok(result);
+    }
+    
     [HttpPost]
     public async Task<ActionResult<Guid>> CreateEmployee([FromBody] CreateEmployeeRequest request)
     {
@@ -21,8 +38,7 @@ public class EmployeeController(IEmployeesService employeesService) : Controller
         if(result.IsFailure)
             return BadRequest(result.Error);
         
-        return Created(new Uri($"{Request.Scheme}://{Request.Host}" +
-                               $"{Request.Path}/{employeeResult.Value.Id}"), 
-            employeeResult.Value.Id);
+        return Created(
+            Url.Action(nameof(GetEmployee), new { id = employeeResult.Value.Id }), employeeResult.Value);
     }
 }

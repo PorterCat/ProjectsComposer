@@ -1,14 +1,8 @@
 using System.Collections.Concurrent;
+using ProjectsComposer.Core.Contracts.Conflicts;
 using ProjectsComposer.Core.Models.Conflicts;
 
 namespace ProjectsComposer.API.Services.Conflicts;
-
-public interface IPendingCasesStore
-{
-    Task<PendingProjectCase> Create(PendingProjectCase pendingProjectCase);
-    Task<IEnumerable<PendingProjectCase>> GetAllPending();
-    Task<bool> TryResolve(Guid caseId); // TODO
-}
 
 public class PendingCasesStore : IPendingCasesStore
 {
@@ -23,10 +17,15 @@ public class PendingCasesStore : IPendingCasesStore
     public Task<IEnumerable<PendingProjectCase>> GetAllPending() =>
         Task.FromResult(_cases.Values.Where(c => c.Status == PendingProjectCaseStatus.Pending));
 
-    public Task<bool> TryResolve(Guid caseId)
+    public Task<PendingProjectCase?> GetCase(Guid caseId) =>
+        Task.FromResult(_cases.GetValueOrDefault(caseId));
+
+    public Task<bool> Close(Guid caseId) =>
+        Task.FromResult(_cases.TryRemove(caseId, out var c));
+
+    public Task<bool> TryGetCaseByTitle(string requestTitle, out PendingProjectCase? pendingProjectCase)
     {
-        if(! _cases.TryGetValue(caseId, out var pendingProjectCase)) 
-            return Task.FromResult(false);
-        return Task.FromResult(true);
+        pendingProjectCase = _cases.Values.FirstOrDefault(c => c.Project.Title == requestTitle);
+        return Task.FromResult(pendingProjectCase is not null);
     }
 }

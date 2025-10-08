@@ -32,7 +32,7 @@ public record Project
         if(string.IsNullOrEmpty(title))
             return Result.Failure<Project>("Title cannot be empty");
         
-        if(startDate < DateTime.UtcNow)
+        if(startDate < DateTime.UtcNow.Date)
             return Result.Failure<Project>("Start date cannot be in the past");
         
         var employee = new Project(id, title, customerCompanyName, contractorCompanyName, startDate, endDate);

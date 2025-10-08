@@ -8,13 +8,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ProjectsComposer.DataAccess\ProjectsComposer.DataAccess.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="CSharpFunctionalExtensions" Version="3.6.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
       <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ProjectsComposer.Core\ProjectsComposer.Core.csproj" />
+      <ProjectReference Include="..\ProjectsComposer.DataAccess\ProjectsComposer.DataAccess.csproj" />
     </ItemGroup>
 
 </Project>

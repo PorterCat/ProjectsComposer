@@ -5,19 +5,16 @@ using ProjectsComposer.DataAccess.Repository;
 
 namespace ProjectsComposer.API.Services;
 
-public interface IProjectsService
-{
-    Task<ProjectEntity?> GetProject(Guid projectId);
-    Task<IEnumerable<ProjectEntity>> GetAllProjects();
-    Task<Result> CreateProject(Project project, Guid? leaderId);
-}
-
-public class ProjectsService(IProjectsRepository projectsRepository, 
+public class ProjectsService(
+    IProjectsRepository projectsRepository, 
     IEmployeesRepository employeesRepository) 
     : IProjectsService
 {
     public async Task<ProjectEntity?> GetProject(Guid projectId) =>
         await projectsRepository.GetById(projectId);
+
+    public async Task<IEnumerable<ProjectEntity>> GetProjectsByName(string projectName) =>
+        await projectsRepository.GetByFilter(projectName, -1);
 
     public async Task<IEnumerable<ProjectEntity>> GetAllProjects() =>
         await projectsRepository.Get();

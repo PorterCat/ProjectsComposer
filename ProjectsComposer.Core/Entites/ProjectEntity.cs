@@ -1,5 +1,3 @@
-using ProjectsComposer.Core.Models;
-
 namespace ProjectsComposer.DataAccess.Entites;
 
 public class ProjectEntity
