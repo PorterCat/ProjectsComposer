@@ -32,6 +32,9 @@ public record Project
         if(string.IsNullOrEmpty(title))
             return Result.Failure<Project>("Title cannot be empty");
         
+        if(startDate > endDate)
+            return Result.Failure<Project>("Start date must be before end date");
+        
         if(startDate < DateTime.UtcNow.Date)
             return Result.Failure<Project>("Start date cannot be in the past");
         

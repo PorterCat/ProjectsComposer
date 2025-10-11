@@ -29,6 +29,18 @@ builder.Services.AddOpenApiDocument(options =>
 });
 builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Dev",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        });
+});
+
 builder.Services.AddDbContext<ProjectsComposerDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(ProjectsComposerDbContext)));
@@ -78,6 +90,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+if (app.Environment.IsDevelopment())
+    app.UseCors("Dev");
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

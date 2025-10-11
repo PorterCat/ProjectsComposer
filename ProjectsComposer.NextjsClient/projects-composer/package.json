@@ -9,10 +9,14 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ant-design/nextjs-registry": "^1.1.0",
     "antd": "^5.27.4",
-    "next": "15.5.3",
+    "axios": "^1.12.2",
+    "i18next": "^25.6.0",
+    "next": "15.5.4",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "react-i18next": "^16.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -20,7 +24,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "15.5.3",
+    "eslint-config-next": "15.5.4",
     "typescript": "^5"
   }
 }
