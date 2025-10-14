@@ -16,6 +16,9 @@ public class ProjectsService(
     public async Task<IEnumerable<ProjectEntity>> GetProjectsByName(string projectName) =>
         await projectsRepository.GetByFilter(projectName, -1);
 
+    public async Task<IEnumerable<ProjectEntity>> GetProjectsByPage(int pageNum, int pageSize) =>
+        await projectsRepository.GetByPage(pageNum, pageSize);
+
     public async Task<IEnumerable<ProjectEntity>> GetAllProjects() =>
         await projectsRepository.Get();
 
@@ -30,5 +33,13 @@ public class ProjectsService(
             project.StartDate, project.EndDate);
         
         return Result.Success();
+    }
+
+    public async Task<Result<Guid>> DeleteProject(Guid id)
+    {
+        var result = await projectsRepository.Delete(id);
+        return result is false ? 
+            Result.Failure<Guid>($"Project with {id} doesn't exist") : 
+            Result.Success(id);
     }
 }

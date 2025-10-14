@@ -14,7 +14,7 @@ interface ProjectListProps {
 }
 
 export const ProjectList = ({ projects, loading, onViewDetails }: ProjectListProps) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('projects');
 
   return (
     <List
@@ -40,7 +40,7 @@ export const ProjectList = ({ projects, loading, onViewDetails }: ProjectListPro
       locale={{ 
         emptyText: (
           <Empty 
-            description={t('projects.notFound')} 
+            description={t('notFound')} 
             image={Empty.PRESENTED_IMAGE_SIMPLE}
           />
         ) 

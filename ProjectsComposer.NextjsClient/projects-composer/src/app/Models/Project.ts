@@ -1,11 +1,11 @@
 export interface Project {
-  id: string;
+  id: BigInt;
   title: string;
-  startDate: string;
+  startDate: Date;
   customerCompanyName?: string;
   contractorCompanyName?: string;
-  endDate?: string;
-  leaderId?: string;
+  endDate?: Date;
+  leaderId?: BigInt;
 }
 
 export interface CreateProjectRequest {

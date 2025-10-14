@@ -25,7 +25,7 @@ interface ProjectFormData {
 export const CreateProjectModal = ({ open, onCancel, onSuccess }: CreateProjectModalProps) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const { t } = useTranslation();
+  const { t } = useTranslation('modal');
 
   const handleSubmit = async (values: ProjectFormData) => {
     try {
@@ -42,15 +42,15 @@ export const CreateProjectModal = ({ open, onCancel, onSuccess }: CreateProjectM
 
       await projectService.createProject(projectData);
       
-      message.success(t('modal.createProject.success'));
+      message.success(t('createProject.success'));
       form.resetFields();
       onSuccess();
       
     } catch (error: any) {
       if (error.response?.status === 409) {
-        message.warning(t('modal.createProject.conflict'));
+        message.warning(t('createProject.conflict'));
       } else {
-        message.error(t('modal.createProject.error'));
+        message.error(t('createProject.error'));
       }
       console.error('Error creating project:', error);
     } finally {
@@ -65,7 +65,7 @@ export const CreateProjectModal = ({ open, onCancel, onSuccess }: CreateProjectM
 
   return (
     <Modal
-      title={t('modal.createProject.title')}
+      title={t('createProject.title')}
       open={open}
       onCancel={handleClose}
       footer={null}
@@ -79,46 +79,43 @@ export const CreateProjectModal = ({ open, onCancel, onSuccess }: CreateProjectM
         layout="vertical"
         onFinish={handleSubmit}
         style={{ maxWidth: '100%' }}
-        initialValues={{
-          leaderId: 'temp-leader-id'
-        }}
       >
         <Flex gap="middle" vertical>
           <Form.Item
-            label={t('modal.createProject.projectName')}
+            label={t('createProject.projectName')}
             name="title"
             rules={[
-              { required: true, message: t('modal.createProject.projectNameRequired') },
-              { min: 3, message: t('modal.createProject.projectNameMinError') }
+              { required: true, message: t('createProject.projectNameRequired') },
+              { min: 3, message: t('createProject.projectNameMinError') }
             ]}
           >
             <Input 
-              placeholder={t('modal.createProject.projectNamePlaceholder')} 
+              placeholder={t('createProject.projectNamePlaceholder')} 
               size="large"
             />
           </Form.Item>
 
           <Flex gap="middle">
             <Form.Item
-              label={t('modal.createProject.customerCompany')}
+              label={t('createProject.customerCompany')}
               name="customerCompanyName"
-              rules={[{ required: true, message: t('modal.createProject.customerCompanyRequired') }]}
+              rules={[{ required: true, message: t('createProject.customerCompanyRequired') }]}
               style={{ flex: 1 }}
             >
               <Input 
-                placeholder={t('modal.createProject.companyPlaceholder')} 
+                placeholder={t('createProject.companyPlaceholder')} 
                 size="large"
               />
             </Form.Item>
 
             <Form.Item
-              label={t('modal.createProject.contractorCompany')}
+              label={t('createProject.contractorCompany')}
               name="contractorCompanyName"
-              rules={[{ required: true, message: t('modal.createProject.contractorCompanyRequired') }]}
+              rules={[{ required: true, message: t('createProject.contractorCompanyRequired') }]}
               style={{ flex: 1 }}
             >
               <Input 
-                placeholder={t('modal.createProject.companyPlaceholder')} 
+                placeholder={t('createProject.companyPlaceholder')} 
                 size="large"
               />
             </Form.Item>
@@ -126,27 +123,27 @@ export const CreateProjectModal = ({ open, onCancel, onSuccess }: CreateProjectM
 
           <Flex gap="middle">
             <Form.Item
-              label={t('modal.createProject.startDate')}
+              label={t('createProject.startDate')}
               name="startDate"
-              rules={[{ required: true, message: t('modal.createProject.startDateRequired') }]}
+              rules={[{ required: true, message: t('createProject.startDateRequired') }]}
               style={{ flex: 1 }}
             >
               <DatePicker 
                 format="DD.MM.YYYY"
-                placeholder={t('modal.createProject.selectDate')}
+                placeholder={t('createProject.selectDate')}
                 style={{ width: '100%' }}
                 size="large"
               />
             </Form.Item>
 
             <Form.Item
-              label={t('modal.createProject.endDate')}
+              label={t('createProject.endDate')}
               name="endDate"
               style={{ flex: 1 }}
             >
               <DatePicker 
                 format="DD.MM.YYYY"
-                placeholder={t('modal.createProject.selectDate')}
+                placeholder={t('createProject.selectDate')}
                 style={{ width: '100%' }}
                 size="large"
               />
@@ -160,7 +157,7 @@ export const CreateProjectModal = ({ open, onCancel, onSuccess }: CreateProjectM
           <Form.Item style={{ marginBottom: 0, marginTop: '16px' }}>
             <Flex gap="small" justify="flex-end">
               <Button onClick={handleClose} size="large">
-                {t('modal.createProject.cancel')}
+                {t('createProject.cancel')}
               </Button>
               <Button 
                 type="primary" 
@@ -168,7 +165,7 @@ export const CreateProjectModal = ({ open, onCancel, onSuccess }: CreateProjectM
                 loading={loading}
                 size="large"
               >
-                {t('modal.createProject.create')}
+                {t('createProject.create')}
               </Button>
             </Flex>
           </Form.Item>

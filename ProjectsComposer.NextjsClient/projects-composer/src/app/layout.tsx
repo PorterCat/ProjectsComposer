@@ -1,5 +1,6 @@
 'use client';
 
+import '@ant-design/v5-patch-for-react-19';
 import "./globals.css";
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { Layout, Menu } from 'antd';
@@ -17,18 +18,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { t } = useTranslation();
+  const { t } = useTranslation('layout');
 
   const menuItems: MenuProps['items'] = [
     {
       key: '/projects',
       icon: <ProjectOutlined />,
-      label: <Link href="/projects">{t('layout.projects')}</Link>,
+      label: <Link href="/projects">{t('projects')}</Link>,
     },
     {
       key: '/employees',
       icon: <TeamOutlined />,
-      label: <Link href="/employees">{t('layout.employees')}</Link>,
+      label: <Link href="/employees">{t('employees')}</Link>,
     },
   ];
 
@@ -52,7 +53,7 @@ export default function RootLayout({
                 color: 'white',
                 fontWeight: 'bold'
               }}>
-                {t('layout.menu')}  
+                {t('menu')}  
               </div>
               <Menu
                 theme="dark"
@@ -71,7 +72,7 @@ export default function RootLayout({
                 alignItems: 'center'
               }}>
                 <h1 style={{ margin: 0, lineHeight: '64px' }}>
-                  {t('layout.systemName')}
+                  {t('systemName')}
                 </h1>
                 <LanguageSwitcher />
               </Header>

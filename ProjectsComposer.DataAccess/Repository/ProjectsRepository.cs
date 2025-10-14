@@ -35,10 +35,10 @@ public class ProjectsRepository(ProjectsComposerDbContext dbContext) : IProjects
         return await query.ToListAsync();
     }
     
-    public async Task<IEnumerable<ProjectEntity>> GetByPage(int page, int pageSize) => 
+    public async Task<IEnumerable<ProjectEntity>> GetByPage(int pageNum, int pageSize) => 
         await dbContext.Projects
             .AsNoTracking()
-            .Skip((page - 1) * pageSize)
+            .Skip(pageNum > 0 ? (pageNum - 1) * pageSize : 0)
             .Take(pageSize)
             .ToListAsync();
 
@@ -61,4 +61,10 @@ public class ProjectsRepository(ProjectsComposerDbContext dbContext) : IProjects
         await dbContext.AddAsync(projectEntity);
         await dbContext.SaveChangesAsync();
     }
+
+    public async Task<bool> Delete(Guid id) =>
+        await dbContext.Projects
+            .AsNoTracking()
+            .Where(c => c.Id == id)
+            .ExecuteDeleteAsync() > 0;
 }

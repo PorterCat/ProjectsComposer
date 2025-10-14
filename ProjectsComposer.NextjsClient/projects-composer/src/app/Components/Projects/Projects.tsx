@@ -14,13 +14,16 @@ const { Title } = Typography;
 export const Projects = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
-  const [modalOpen, setModalOpen] = useState(false);
-  const { t } = useTranslation();
+  
+  const [createProjectModalOpen, setCreateModalOpen] = useState(false);
+  const [fullProjectModalOpen, setFullModalOpen] = useState(false);
+  
+  const { t } = useTranslation('projects');
 
-  const loadProjects = async () => {
+  const loadProjects = async (pageNum: number, pageSize: number) => {
     try {
       setLoading(true);
-      const data = await projectService.getAllProjects();
+      const data = await projectService.getPage(pageNum, pageSize);
       setProjects(data);
     } catch (error) {
       message.error(t('projects.errorLoading'));
@@ -31,24 +34,24 @@ export const Projects = () => {
   };
 
   useEffect(() => {
-    loadProjects();
+    loadProjects(1, 6); // Check it later
   }, []);
 
-  const showModal = () => {
-    setModalOpen(true);
+  const showCreateProjectModal = () => {
+    setCreateModalOpen(true);
   };
 
-  const handleModalClose = () => {
-    setModalOpen(false);
+  const handleCreateProjectModalClose = () => {
+    setCreateModalOpen(false);
   };
 
   const handleProjectCreated = () => {
-    handleModalClose();
-    loadProjects();
+    handleCreateProjectModalClose();
+    loadProjects(1, 6); // Check it later
   };
 
   const handleViewDetails = (project: Project) => {
-    message.info(`${t('projects.viewDetails')}: ${project.title}`);
+    message.info(`${t('viewDetails')}: ${project.title}`);
     console.log('Project details:', project);
   };
 
@@ -56,13 +59,13 @@ export const Projects = () => {
     <div className="projects">
       <Space direction="vertical" style={{ width: '100%' }} size="large">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Title level={2}>{t('projects.title')}</Title>
+          <Title level={2}>{t('title')}</Title>
           <Button 
             type="primary" 
             icon={<PlusOutlined />}
-            onClick={showModal}
+            onClick={showCreateProjectModal}
           >
-            {t('projects.createProject')}
+            {t('createProject')}
           </Button>
         </div>
 
@@ -74,8 +77,8 @@ export const Projects = () => {
       </Space>
 
       <CreateProjectModal 
-        open={modalOpen}
-        onCancel={handleModalClose}
+        open={createProjectModalOpen}
+        onCancel={handleCreateProjectModalClose}
         onSuccess={handleProjectCreated}
       />
     </div>

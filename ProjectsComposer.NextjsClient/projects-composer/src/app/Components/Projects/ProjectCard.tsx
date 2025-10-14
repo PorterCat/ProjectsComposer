@@ -12,7 +12,7 @@ interface ProjectCardProps {
 }
 
 export const ProjectCard = ({ project, onViewDetails }: ProjectCardProps) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('projects');
 
   return (
     <Card
@@ -25,28 +25,30 @@ export const ProjectCard = ({ project, onViewDetails }: ProjectCardProps) => {
           key="view"
           onClick={() => onViewDetails(project)}
         >
-          {t('projects.projectDetails')}
+          {t('projectDetails')}
         </Button>,
       ]}
     >
       <Space direction="vertical" style={{ width: '100%' }}>
         <div>
-          <Text strong>{t('projects.projectId')}: </Text>
-          <Text type="secondary" style={{ fontSize: '12px' }}>{project.id}</Text>
+          <Text strong>ID: </Text>
+          <Text type="secondary" style={{ fontSize: '12px' }}>
+            {project.id.toString().toLocaleUpperCase()}
+          </Text>
         </div>
         <div>
-          <Text strong>{t('projects.startDate')}: </Text>
-          <Text>{project.startDate}</Text>
+          <Text strong>{t('startDate')}: </Text>
+          <Text>{project.startDate.toString()}</Text>
         </div>
         {project.endDate && (
           <div>
-            <Text strong>{t('projects.endDate')}: </Text>
-            <Text>{project.endDate}</Text>
+            <Text strong>{t('endDate')}: </Text>
+            <Text>{project.endDate.toString()}</Text>
           </div>
         )}
         {project.customerCompanyName && (
           <div>
-            <Text strong>{t('projects.customer')}: </Text>
+            <Text strong>{t('customer')}: </Text>
             <Text>{project.customerCompanyName}</Text>
           </div>
         )}

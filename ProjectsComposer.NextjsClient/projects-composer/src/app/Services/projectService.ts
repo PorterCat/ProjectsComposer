@@ -23,6 +23,18 @@ export const projectService = {
     return response.data;
   },
 
+  async getPage(pageNum: number, pageSize: number): Promise<Project[]> {
+    const response = await api.get<Project[]>(`/project`, { 
+      params: {pageNum, pageSize}
+    })
+    return response.data;
+  },
+
+  async deleteProject(id: string): Promise<Project> {
+    const response = await api.delete<Project>(`/project/${id}`);
+    return response.data;
+  },
+
   async createProject(projectData: CreateProjectRequest): Promise<Project> {
     const response = await api.post<Project>('/project', projectData);
     return response.data;

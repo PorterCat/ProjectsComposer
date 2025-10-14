@@ -20,6 +20,14 @@ public class ProjectController(IProjectsService projectsService, IPendingCasesSt
         return Ok(response);
     }
 
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<ProjectResponse>>> GetProjectsByPage([FromQuery] PageQuery pageQuery)
+    {
+        var projects = await projectsService.GetProjectsByPage(pageQuery.PageNum, pageQuery.PageSize);
+        var response = projects.Select(p => new ProjectResponse(p.Id, p.Title, p.StartDate.ToShortDateString()));
+        return Ok(response);
+    }
+
     [HttpGet("{id}")]
     public async Task<ActionResult<ProjectResponse>> GetProjectById(Guid id)
     {
@@ -72,6 +80,17 @@ public class ProjectController(IProjectsService projectsService, IPendingCasesSt
         
         return Created(
             Url.Action(nameof(GetProjectById), new { id = projectResult.Value.Id }), projectResult.Value);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteProject(Guid id)
+    {
+        var result = await projectsService.DeleteProject(id);
+        if(result.IsFailure)
+            return BadRequest(result.Error);
+
+        result.TryGetValue(out var idProject);
+        return Ok(idProject);
     }
     
     // Conflicts resolutions
