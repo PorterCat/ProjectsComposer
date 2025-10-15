@@ -35,9 +35,6 @@ public record Project
         if(startDate > endDate)
             return Result.Failure<Project>("Start date must be before end date");
         
-        if(startDate < DateTime.UtcNow.Date)
-            return Result.Failure<Project>("Start date cannot be in the past");
-        
         var employee = new Project(id, title, customerCompanyName, contractorCompanyName, startDate, endDate);
         return Result.Success(employee);
     }

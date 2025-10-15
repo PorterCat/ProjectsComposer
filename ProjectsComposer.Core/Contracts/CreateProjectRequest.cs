@@ -6,8 +6,8 @@ namespace ProjectsComposer.Core.Contracts;
 
 public record CreateProjectRequest(
     [Required][MaxLength(Project.MaxTitleLength)] string Title,
-    [DataFuture(ErrorMessage = "StartDate cannot be in the Past")]
     DateOnly StartDate, 
+    [DataFuture(ErrorMessage = "EndDate cannot be in the Past")]
     DateOnly? EndDate = null,
     string CustomerCompanyName = "Unknown",
     string ContractorCompanyName = "Unknown",

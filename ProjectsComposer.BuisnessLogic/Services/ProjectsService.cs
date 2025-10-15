@@ -36,18 +36,20 @@ public class ProjectsService(
             .ToList();
     }
 
-    public async Task<IEnumerable<Project>> GetProjectsByPage(int pageNum, int pageSize)
+    public async Task<Result<(IEnumerable<Project>, int, int)>> GetProjectsByPage(int pageNum, int pageSize)
     {
         var projectEntities = await projectsRepository.GetByPage(pageNum, pageSize);
         var results = projectEntities.Select(c => 
             Project.Create(c.Id, c.Title, 
             c.ContractorCompanyName, c.CustomerCompanyName, 
             c.StartDate, c.EndDate));
-            
-        return results
+
+        var count = await projectsRepository.GetCountAsync();
+        
+        return (results
             .Where(r => r.IsSuccess)
             .Select(r => r.Value)
-            .ToList();
+            .ToList(), count, count / pageSize);
     }
 
     public async Task<IEnumerable<Project>> GetAllProjects()

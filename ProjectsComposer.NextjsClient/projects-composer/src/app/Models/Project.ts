@@ -8,6 +8,12 @@ export interface Project {
   leaderId?: BigInt;
 }
 
+export interface PageProjectsResponse {
+  projectResponses: Project[];
+  total: number;
+  totalPages: number;
+}
+
 export interface CreateProjectRequest {
   title: string;
   startDate: string;

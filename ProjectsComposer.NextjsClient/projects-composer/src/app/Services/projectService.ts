@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Project, CreateProjectRequest } from '../Models/Project';
+import { Project, CreateProjectRequest, PageProjectsResponse } from '../Models/Project';
 
 const API_BASE_URL = 'https://localhost:4000';
 
@@ -23,8 +23,8 @@ export const projectService = {
     return response.data;
   },
 
-  async getPage(pageNum: number, pageSize: number): Promise<Project[]> {
-    const response = await api.get<Project[]>(`/project`, { 
+  async getProjectsByPage(pageNum: number, pageSize: number): Promise<PageProjectsResponse> {
+    const response = await api.get<PageProjectsResponse>(`/project`, { 
       params: {pageNum, pageSize}
     })
     return response.data;

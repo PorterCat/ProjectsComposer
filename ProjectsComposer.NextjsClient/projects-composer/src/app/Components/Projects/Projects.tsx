@@ -8,23 +8,33 @@ import { LeftOutlined, PlusOutlined, RightOutlined } from '@ant-design/icons';
 import { ProjectList } from './ProjectList';
 import { CreateProjectModal } from './CreateProjectModal';
 import { useTranslation } from 'react-i18next';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const { Title } = Typography;
 
 export const Projects = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [totalPages, setTotalPages] = useState(10);
   
   const [createProjectModalOpen, setCreateModalOpen] = useState(false);
   const [fullProjectModalOpen, setFullModalOpen] = useState(false);
   
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  const urlPage = searchParams.get('pageNum');
+  const initialPage = urlPage ? parseInt(urlPage, 10) : 1;
+  const [currentPage, setCurrentPage] = useState(initialPage);
+
   const { t } = useTranslation('projects');
 
   const loadProjects = async (pageNum: number, pageSize: number) => {
     try {
       setLoading(true);
-      const data = await projectService.getPage(pageNum, pageSize);
-      setProjects(data);
+      const data = await projectService.getProjectsByPage(pageNum, pageSize);
+      setProjects(data.projectResponses);
+      setTotalPages(data.totalPages);
     } catch (error) {
       message.error(t('projects.errorLoading'));
       console.error('Error loading projects:', error);
@@ -33,9 +43,16 @@ export const Projects = () => {
     }
   };
 
+  const updateUrl = (pageNum: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('pageNum', pageNum.toString());
+    router.push(`/projects?${params.toString()}`, { scroll: false });
+  };
+
   useEffect(() => {
-    loadProjects(1, 6); // Check it later
-  }, []);
+    loadProjects(currentPage, 6);
+    updateUrl(currentPage);
+  }, [currentPage]);
 
   const showCreateProjectModal = () => {
     setCreateModalOpen(true);
@@ -47,12 +64,32 @@ export const Projects = () => {
 
   const handleProjectCreated = () => {
     handleCreateProjectModalClose();
-    loadProjects(1, 6); // Check it later
+    loadProjects(1, 6);
+    setCurrentPage(1);
+    updateUrl(1);
   };
 
+  const handlePageChange = (value: number | null) => {
+    if (value && value >= 1 && value <= totalPages) {
+      setCurrentPage(value);
+    }
+  }; 
+  
   const handleViewDetails = (project: Project) => {
     message.info(`${t('viewDetails')}: ${project.title}`);
     console.log('Project details:', project);
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
   return (
@@ -75,15 +112,40 @@ export const Projects = () => {
           onViewDetails={handleViewDetails}
         />
         
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <Button icon={<LeftOutlined />} />
-
-          <InputNumber
-            min={1}
-            size="small"
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Button 
+            icon={<LeftOutlined />}
+            onClick={prevPage}
+            disabled={currentPage === 1}
           />
 
-          <Button icon={<RightOutlined />} />
+          <Space.Compact>
+            <InputNumber
+              min={1}
+              max={totalPages}
+              size="small"
+              value={currentPage}
+              onChange={handlePageChange}
+              controls={false}
+              style={{ width: 60 }}
+            />
+            <span style={{ 
+              padding: '0 8px', 
+              display: 'flex', 
+              alignItems: 'center', 
+              background: '#fafafa',
+              border: '1px solid #d9d9d9',
+              borderLeft: 'none'
+            }}>
+              / {totalPages}
+            </span>
+          </Space.Compact>
+
+          <Button 
+            icon={<RightOutlined />}
+            onClick={nextPage}
+            disabled={currentPage === totalPages}
+          />
         </div>
       </Space>
 

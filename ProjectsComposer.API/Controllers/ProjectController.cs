@@ -1,3 +1,4 @@
+using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Mvc;
 using ProjectsComposer.API.Services;
 using ProjectsComposer.API.Services.Conflicts;
@@ -23,12 +24,19 @@ public class ProjectController(
     }
 
     [HttpGet]
-    public async Task<ActionResult<PageResponse<Project>>> GetProjectsByPage([FromQuery] PageQuery pageQuery)
+    public async Task<ActionResult<PageResponse<ProjectResponse>>> GetProjectsByPage([FromQuery] PageQuery pageQuery)
     {
-        var projects = await projectsService.GetProjectsByPage(pageQuery.PageNum, pageQuery.PageSize);
-        var response = projects.Select(p => new ProjectResponse(p.Id, p.Title, p.StartDate.ToShortDateString()));
-        return Ok(response);
-    }
+        Result<(IEnumerable<Project> Projects, int Total, int TotalPages)> projects
+            = await projectsService.GetProjectsByPage(pageQuery.PageNum, pageQuery.PageSize);
+
+        if (projects.IsFailure)
+            return BadRequest(projects.Error);
+
+        var projectResponses = projects.Value.Projects.Select(p =>
+            new ProjectResponse(p.Id, p.Title, p.StartDate.ToShortDateString()));
+
+        return Ok(new {projectResponses, projects.Value.Total, projects.Value.TotalPages});
+}
 
     [HttpGet("{id}")]
     public async Task<ActionResult<ProjectResponse>> GetProjectById(Guid id)
