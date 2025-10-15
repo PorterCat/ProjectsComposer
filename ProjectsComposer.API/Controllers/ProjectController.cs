@@ -10,7 +10,9 @@ namespace ProjectsComposer.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ProjectController(IProjectsService projectsService, IPendingCasesStore pendingCasesStore) : ControllerBase
+public class ProjectController(
+    IProjectsService projectsService, 
+    IPendingCasesStore pendingCasesStore) : ControllerBase
 {
     [HttpGet("all")]
     public async Task<ActionResult<IEnumerable<ProjectResponse>>> GetAllProjects()
@@ -21,7 +23,7 @@ public class ProjectController(IProjectsService projectsService, IPendingCasesSt
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProjectResponse>>> GetProjectsByPage([FromQuery] PageQuery pageQuery)
+    public async Task<ActionResult<PageResponse<Project>>> GetProjectsByPage([FromQuery] PageQuery pageQuery)
     {
         var projects = await projectsService.GetProjectsByPage(pageQuery.PageNum, pageQuery.PageSize);
         var response = projects.Select(p => new ProjectResponse(p.Id, p.Title, p.StartDate.ToShortDateString()));

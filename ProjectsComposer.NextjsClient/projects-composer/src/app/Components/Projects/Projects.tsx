@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Button, Space, Typography, message } from 'antd';
+import { Button, InputNumber, Space, Typography, message } from 'antd';
 import { Project } from '../../Models/Project';
 import { projectService } from '../../Services/projectService';
-import { PlusOutlined } from '@ant-design/icons';
+import { LeftOutlined, PlusOutlined, RightOutlined } from '@ant-design/icons';
 import { ProjectList } from './ProjectList';
 import { CreateProjectModal } from './CreateProjectModal';
 import { useTranslation } from 'react-i18next';
@@ -74,6 +74,17 @@ export const Projects = () => {
           loading={loading}
           onViewDetails={handleViewDetails}
         />
+        
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <Button icon={<LeftOutlined />} />
+
+          <InputNumber
+            min={1}
+            size="small"
+          />
+
+          <Button icon={<RightOutlined />} />
+        </div>
       </Space>
 
       <CreateProjectModal 

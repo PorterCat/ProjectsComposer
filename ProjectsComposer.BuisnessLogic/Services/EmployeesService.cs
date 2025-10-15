@@ -7,10 +7,10 @@ namespace ProjectsComposer.API.Services;
 
 public class EmployeesService(IEmployeesRepository employeesRepository) : IEmployeesService
 {
-    public Task<IEnumerable<EmployeeEntity>> GetAllEmployees() =>
+    public Task<IEnumerable<Employee>> GetAllEmployees() =>
         employeesRepository.Get();
 
-    public async Task<EmployeeEntity?> GetEmployee(Guid id) =>
+    public async Task<Employee?> GetEmployee(Guid id) =>
         await employeesRepository.GetById(id);
     
     public async Task<Result> CreateEmployee(Employee employee)

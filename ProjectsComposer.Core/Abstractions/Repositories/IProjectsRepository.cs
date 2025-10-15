@@ -1,15 +1,15 @@
-using ProjectsComposer.DataAccess.Entites;
+using ProjectsComposer.Core.Models;
 
 namespace ProjectsComposer.DataAccess.Repository;
 
 public interface IProjectsRepository
 {
-    Task<IEnumerable<ProjectEntity>> Get();
-    Task<IEnumerable<ProjectEntity>> GetWithEmployees();
-    Task<ProjectEntity?> GetById(Guid id);
-    Task<IEnumerable<ProjectEntity>> GetByFilter(string title, int employeesCount);
-    Task<IEnumerable<ProjectEntity>> GetByPage(int pageNum, int pageSize);
-
+    Task<IEnumerable<Project>> Get();
+    Task<IEnumerable<Project>> GetWithEmployees();
+    Task<Project?> GetById(Guid id);
+    Task<IEnumerable<Project>> GetByFilter(string title, int employeesCount);
+    Task<IEnumerable<Project>> GetByPage(int pageNum, int pageSize);
+    Task<int> GetCountAsync();
     Task Add(Guid id, string title,
         string customerCompanyName, string contractorCompanyName,
         Guid? leaderId,
